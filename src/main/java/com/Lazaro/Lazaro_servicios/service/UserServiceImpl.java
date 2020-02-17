@@ -12,29 +12,29 @@ import com.Lazaro.Lazaro_servicios.entity.User;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDao userDAO;
+    private UserDao userDao;
 	
 	@Override
 	public List<User> findAll() {
-		List<User> listUsers= userDAO.findAll();
+		List<User> listUsers= userDao.findAll();
 		return listUsers;
 	}
 
 	@Override
 	public User findById(int id) {
-		User user = userDAO.findById(id);
+		User user = userDao.findById(id);
 		return user;
 	}
 
 	@Override
 	public void save(User user) {
-		userDAO.save(user);
+		userDao.save(user);
 
 	}
 
 	@Override
 	public void deleteById(int id) {
-		userDAO.deleteById(id);
+		userDao.deleteById(id);
 	}
 
 }

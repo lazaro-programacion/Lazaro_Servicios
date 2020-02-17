@@ -1,6 +1,5 @@
 package com.Lazaro.Lazaro_servicios.controller;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +10,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.Lazaro.Lazaro_servicios.entity.User;
+import com.Lazaro.Lazaro_servicios.entity.UserRepository;
 import com.Lazaro.Lazaro_servicios.service.UserService;
+
+
+
 //Indiciamos que es un controlador rest
 @RestController
-@RequestMapping("/api") //esta sera la raiz de la url, es decir http://127.0.0.1:8080/api/
-@ResponseBody
+@ResponseBody@RequestMapping("/api") //esta sera la raiz de la url, es decir http://127.0.0.1:8080/api/
+
 public class UserRestController {
 	
+	@Autowired
+    UserRepository UserRepository;
+
 	//Inyectamos el servicio para poder hacer uso de el
 	@Autowired
 	private UserService userService;
@@ -34,6 +42,31 @@ public class UserRestController {
 		//retornará todos los usuarios
 		return userService.findAll();
 	}
+
+	@GetMapping("/user")
+    @ResponseBody
+    public ModelAndView User() {
+
+        ModelAndView modelAndView=new ModelAndView("user");
+        modelAndView.addObject("mensaje", "");
+        return modelAndView;
+    }
+
+    @PostMapping("/user")
+    public ModelAndView UserPost(
+		@RequestParam("id") Integer id,
+        @RequestParam("email") String email,
+		@RequestParam("password") String password){    
+        ModelAndView modelAndView=new ModelAndView("user");
+		
+		
+		
+		User user = new User(id, email, password);
+        
+		UserRepository.save(user);
+
+        return modelAndView;
+    }
 	
 	/*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
 	http://127.0.0.1:8080/api/users/1*/
